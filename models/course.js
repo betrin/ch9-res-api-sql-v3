@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
       validate: {
+        notEmpty: {
+          msg: 'Description cannot be empty.',
+        },
         notNull: {
           msg: 'A course must have a description.',
         },

@@ -17,7 +17,7 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
 router.post('/users', asyncHandler(async (req, res) => {
   try {
     await User.create(req.body);
-    res.location('/').status(201);
+    res.location('/').status(201).end();
   } catch (error) {
     console.log('ERROR: ', error.name);
     console.log('ERROR details: ', error.errors);
