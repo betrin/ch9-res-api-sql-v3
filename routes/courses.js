@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+
+const User = require('../models').User;
 const { asyncHandler } = require('../middleware/asyncHandler');
 const { authenticateUser } = require('../middleware/auth');
 
@@ -8,9 +10,13 @@ const { Course } = require('../models'); // Fixed import statement
 // GET /api/courses
 router.get('/courses', async (req, res) => {
   try {
-    const courses = await Course.findAll(
-      { attributes: { exclude: ['password', 'createdAt', 'updatedAt'] } }
-    );
+    const courses = await Course.findAll({
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+      include: [{
+        model: User,
+        attributes: ['firstName', 'lastName', 'emailAddress']
+      }]
+    });
     res.json(courses);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -20,9 +26,12 @@ router.get('/courses', async (req, res) => {
 // GET /api/courses/:id - Returns a course by id
 router.get('/courses/:id', async (req, res) => {
   try {
-    const course = await Course.findByPk({
-      where: { id: req.params.id },
-      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
+    const course = await Course.findByPk(req.params.id, {
+      attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+      include: [{
+        model: User,
+        attributes: ['firstName', 'lastName', 'emailAddress']
+      }]
     });
     res.json(course);
   } catch (error) {
@@ -36,7 +45,7 @@ router.post('/courses', authenticateUser, asyncHandler(async (req, res) => {
     const course = await Course.create(req.body);
     const courseId = await course.id;
     let courseLocation = `/courses/${courseId}`;
-    res.location(courseLocation).status(201).json({ message: 'Course successfully created!' });
+    res.location(courseLocation).status(201);
   } catch (error) {
     console.log('ERROR: ', error.name);
     console.log('ERROR details: ', error.errors);

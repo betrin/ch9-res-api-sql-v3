@@ -3,20 +3,21 @@ var router = express.Router();
 
 const User = require('../models').User;
 const { asyncHandler } = require('../middleware/asyncHandler');
+const { authenticateUser } = require('../middleware/auth');
 
 // GET /api/users - Returns all users
-router.get('/users', asyncHandler(async (req, res) => {
-  const users = await User.findAll({
+router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
+  const user = await User.findByPk(req.currentUser.id, {
     attributes: { exclude: ['password', 'createdAt', 'updatedAt'] }
   });
-  res.json(users);
+  res.json(user);
 }));
 
 // Route that creates a new user.
 router.post('/users', asyncHandler(async (req, res) => {
   try {
     await User.create(req.body);
-    res.status(201).json({ message: 'Account successfully created!' });
+    res.location('/').status(201);
   } catch (error) {
     console.log('ERROR: ', error.name);
     console.log('ERROR details: ', error.errors);

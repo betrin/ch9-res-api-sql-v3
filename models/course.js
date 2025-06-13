@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         notNull: {
-          msg: 'A user must have a title.',
+          msg: 'a Course must have a title.',
         },
         notEmpty: {
           msg: 'Please provide a title.',
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
       validate: {
         notNull: {
