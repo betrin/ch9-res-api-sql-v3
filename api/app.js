@@ -1,6 +1,7 @@
 'use strict';
 
 // load modules
+const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
 const Sequelize = require('sequelize');
@@ -17,6 +18,9 @@ var coursesRouter = require('./routes/courses');
 
 // create the Express app
 const app = express();
+
+// Enable All CORS Requests
+app.use(cors());
 
 // setup morgan which gives us http request logging
 app.use(morgan('dev'));
