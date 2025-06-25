@@ -1,10 +1,10 @@
-import { useState, useContext, useRef } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
 import { useNavigate, Navigate, Link, useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import ErrorsDisplay from "../components/ErrorsDisplay";
 
 const UserSignIn = () => {
-  const { signIn } = useContext(UserContext);
+  const { signIn, authUser } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -13,13 +13,24 @@ const UserSignIn = () => {
   const password = useRef(null);
   const [errors, setErrors] = useState([]);
 
+  // Clear any problematic state when component mounts
+  useEffect(() => {
+    // If user is already authenticated, redirect to authenticated page
+    if (authUser) {
+      navigate('/authenticated', { replace: true });
+    }
+  }, [authUser, navigate]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     let from = '/authenticated';
-    if (location.state) {
-      from = location.state.from;
-      if (from === 'signin' || from === 'signup') {
-        from = '/authenticated';
+    
+    if (location.state && location.state.from) {
+      const fromPath = location.state.from;
+      console.log('From path:', fromPath);
+      if (fromPath !== '/signin' && fromPath !== '/signup') {
+        from = fromPath;
       }
     }
 
@@ -36,8 +47,8 @@ const UserSignIn = () => {
         setErrors(['Sign in was unsuccessful']);
       }
     } catch (error) {
-      console.log('Error: ', error);
-      navigate('/error');
+      console.log('Error during sign in: ', error);
+      setErrors(['An error occurred during sign in']);
     }
   }
 

@@ -20,12 +20,12 @@ const App = () => {
         <Route path="/courses/:id" element={<Course />} />
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/signin" element={<UserSignIn />} />
+        <Route path="/signout" element={<UserSignOut />} />
         <Route path="/forbidden" element={<Forbidden />} />
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/courses/create" element={<CreateCourse />} />
           <Route path="/courses/:id/update" element={<UpdateCourse />} />
-          <Route path="/signout" element={<UserSignOut />} />
           <Route path="/authenticated" element={<Authenticated />} />
         </Route>
         

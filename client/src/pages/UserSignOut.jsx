@@ -3,12 +3,15 @@ import UserContext from '../context/UserContext';
 import { Navigate } from 'react-router-dom';
 
 const UserSignOut = () => {
-  const { signOut } = useContext(UserContext);
+  const { signOut, authUser } = useContext(UserContext);
 
   useEffect(() => {
+    console.log('Signing out user:', authUser);
     signOut();
-  }, [signOut]);
+    console.log('Sign out completed');
+  }, [signOut, authUser]);
 
+  // Always redirect to home page after sign out
   return <Navigate to="/" replace />;
 }
 

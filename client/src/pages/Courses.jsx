@@ -1,9 +1,13 @@
 import { api } from "../utils/apiHelper";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ErrorsDisplay from '../components/ErrorsDisplay';
+import UserContext from "../context/UserContext";
+
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [errors, setErrors] = useState([]);
+  const { authUser } = useContext(UserContext);
+
   useEffect(() => {
     api("/courses")
       .then((res) => {
@@ -43,7 +47,7 @@ const Courses = () => {
             >
               <polygon points="7,6 7,0 6,0 6,6 0,6 0,7 6,7 6,13 7,13 7,7 13,7 13,6 "></polygon>
             </svg>
-            New Course
+            {authUser ? 'New Course' : 'Sign In to Create a Course'}
           </span>
         </a>
       </div>
