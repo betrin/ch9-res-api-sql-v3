@@ -14,7 +14,8 @@ const Authenticated = () => {
   useEffect(() => {
     
     if (authUser && sessionCredentials) {
-      
+
+      // Get courses for the auth user
       api("/courses/me", 'GET', null, sessionCredentials)
         .then((res) => {
        

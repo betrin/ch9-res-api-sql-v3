@@ -41,10 +41,10 @@ const UpdateCourse = () => {
     });
   }, [authUser, navigate, id]);
 
-  
-
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    // create the updated course object
     const updatedCourse = {
       userId: authUser.id,
       title: title.current.value,
@@ -53,6 +53,7 @@ const UpdateCourse = () => {
       materialsNeeded: materialsNeeded.current.value,
     };
 
+    // update the course
     try {
       const response = await api(`/courses/${id}`, 'PUT', updatedCourse, sessionCredentials);
       if (response.status === 204) {
@@ -70,6 +71,7 @@ const UpdateCourse = () => {
     }
   };
 
+  // handle the cancel button
   const handleCancel = (event) => {
     event.preventDefault();
     navigate(`/courses/${id}`);

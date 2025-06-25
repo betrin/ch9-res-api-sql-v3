@@ -8,6 +8,7 @@ const Courses = () => {
   const [errors, setErrors] = useState([]);
   const { authUser } = useContext(UserContext);
 
+  // get the courses for the page
   useEffect(() => {
     api("/courses")
       .then((res) => {
@@ -17,6 +18,7 @@ const Courses = () => {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
       })
+      // set the courses data for page
       .then((data) => {
         setCourses(data);
       })

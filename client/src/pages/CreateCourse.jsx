@@ -12,11 +12,11 @@ const CreateCourse = () => {
   const estimatedTime = useRef(null);
   const materialsNeeded = useRef(null);
   const [errors, setErrors] = useState([]);
-
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    // create the course object
     const course = {
       userId: authUser.id,
       title: title.current.value,
@@ -25,6 +25,7 @@ const CreateCourse = () => {
       materialsNeeded: materialsNeeded.current.value,
     };
     
+    // create the course
     try {
       const response = await api('/courses', 'POST', course, sessionCredentials);
       if (response.status === 201) {

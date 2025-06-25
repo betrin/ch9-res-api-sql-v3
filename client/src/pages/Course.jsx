@@ -12,6 +12,7 @@ const Course = () => {
   const [course, setCourse] = useState(null);
   const [errors, setErrors] = useState([]);
 
+  // get the course for the page
   useEffect(() => {
     api(`/courses/${id}`).then((res) => {
       if (res.ok) {
@@ -25,6 +26,7 @@ const Course = () => {
       setErrors([err.message]);
     });
   }, [id]);
+  
   if (errors.length > 0) {
     return (
       <div className="wrap">

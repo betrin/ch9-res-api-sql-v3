@@ -23,17 +23,19 @@ const UserSignIn = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
     let from = '/authenticated';
     
+    // check if the user is coming from a specific page
     if (location.state && location.state.from) {
       const fromPath = location.state.from;
       console.log('From path:', fromPath);
+      // dont allow to return to signup or signin as that would be a loop
       if (fromPath !== '/signin' && fromPath !== '/signup') {
         from = fromPath;
       }
     }
 
+    // create the credentials object
     const credentials = {
       username: username.current.value,
       password: password.current.value

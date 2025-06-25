@@ -13,10 +13,13 @@ const UserSignUp = () => {
   const username = useRef(null);
   const password = useRef(null);
 
+  // state
   const [errors, setErrors] = useState([]);
   
+  // handle the submit button
   const handleSubmit = async(event) => {
     event.preventDefault();
+    // create the user object
     const user = {
       firstName: firstName.current.value,
       lastName: lastName.current.value,
@@ -24,6 +27,7 @@ const UserSignUp = () => {
       password: password.current.value,
     }
 
+    // create the user
     try {
       const response = await api('/users', 'POST', user);
       // console.log(response);
@@ -42,11 +46,11 @@ const UserSignUp = () => {
     }
   }
 
+  // handle the cancel button
   const handleCancel = (event) => {
     event.preventDefault();
     navigate('/');
   }
-
 
   return (
     <main>

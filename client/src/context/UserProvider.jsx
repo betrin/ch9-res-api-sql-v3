@@ -30,6 +30,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  // handle the sign out button
   const signOut = () => {
     setAuthUser(null);
     setSessionCredentials(null);
