@@ -12,28 +12,33 @@ const UserSignIn = () => {
   const username = useRef(null);
   const password = useRef(null);
   const [errors, setErrors] = useState([]);
+  // state to track if the user is signing in
+  const [isSigningIn, setIsSigningIn] = useState(false);
 
   // Clear any problematic state when component mounts
   useEffect(() => {
-    // If user is already authenticated, redirect to authenticated page
-    if (authUser) {
+    // If user is already authenticated 
+    if (authUser && !isSigningIn) {
       navigate('/authenticated', { replace: true });
     }
-  }, [authUser, navigate]);
+  }, [authUser, navigate, isSigningIn]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsSigningIn(true);
+    
     let from = '/authenticated';
     
     // check if the user is coming from a specific page
     if (location.state && location.state.from) {
       const fromPath = location.state.from;
-      console.log('From path:', fromPath);
+      // console.log('From path:', fromPath);
       // dont allow to return to signup or signin as that would be a loop
       if (fromPath !== '/signin' && fromPath !== '/signup') {
         from = fromPath;
       }
     }
+
 
     // create the credentials object
     const credentials = {
@@ -47,10 +52,12 @@ const UserSignIn = () => {
         navigate(from);
       } else {
         setErrors(['Sign in was unsuccessful']);
+        setIsSigningIn(false);
       }
     } catch (error) {
       console.log('Error during sign in: ', error);
       setErrors(['An error occurred during sign in']);
+      setIsSigningIn(false);
     }
   }
 
