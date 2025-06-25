@@ -24,6 +24,7 @@ const App = () => {
         <Route path="/signout" element={<UserSignOut />} />
         <Route path="/forbidden" element={<Forbidden />} />
         <Route path="/error" element={<Error />} />
+        <Route path="/notfound" element={<NotFound />} />
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/courses/create" element={<CreateCourse />} />

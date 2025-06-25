@@ -29,12 +29,13 @@ const UpdateCourse = () => {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
     }).then((data) => {
-      if (authUser.id !== data.userId ) {
-        navigate('/forbidden');
-      }
-      setCourse(data);
-      // Populate form fields with existing course data
-      if (data) {
+      if (data) { // Only proceed if data exists (not null from 404 redirect)
+        if (authUser.id !== data.userId ) {
+          navigate('/forbidden');
+          return; // Return early to prevent further execution
+        }
+        setCourse(data);
+        // Populate form fields with existing course data
         title.current.value = data.title || '';
         description.current.value = data.description || '';
         estimatedTime.current.value = data.estimatedTime || '';
