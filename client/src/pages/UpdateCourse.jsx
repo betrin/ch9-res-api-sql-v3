@@ -21,6 +21,10 @@ const UpdateCourse = () => {
     api(`/courses/${id}`).then((res) => {
       if (res.ok) {
         return res.json();
+      } else if (res.status === 404) {
+        // if 404, redirect to NotFound page
+        navigate('/notfound');
+        return null;
       } else {
         throw new Error(`HTTP error! status: ${res.status}`);
       }

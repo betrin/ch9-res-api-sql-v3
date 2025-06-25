@@ -12,21 +12,30 @@ const Course = () => {
   const [course, setCourse] = useState(null);
   const [errors, setErrors] = useState([]);
 
+  
   // get the course for the page
   useEffect(() => {
     api(`/courses/${id}`).then((res) => {
-      if (res.ok) {
+      console.log('Response status:', res.status);
+      if (res.status === 404) {
+        // Course not found, redirect to NotFound page
+        navigate('/notfound');
+        return null;
+      } else if (res.ok) {
         return res.json();
       } else {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
     }).then((data) => {
-      setCourse(data);
+      if (data) {
+        setCourse(data);
+      }
     }).catch((err) => {
+      console.error('Error fetching course:', err);
       setErrors([err.message]);
     });
-  }, [id]);
-  
+  }, [id, navigate]);
+
   if (errors.length > 0) {
     return (
       <div className="wrap">

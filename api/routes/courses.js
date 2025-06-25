@@ -55,6 +55,12 @@ router.get('/courses/:id', async (req, res) => {
         attributes: ['firstName', 'lastName', 'emailAddress']
       }]
     });
+    
+    if (!course) {
+      res.status(404).json({ message: 'Course not found' });
+      return;
+    }
+    
     res.json(course);
   } catch (error) {
     res.status(500).json({ message: error.message });
