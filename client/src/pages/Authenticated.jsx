@@ -5,29 +5,19 @@ import { api } from '../utils/apiHelper';
 import ErrorsDisplay from '../components/ErrorsDisplay';
 
 const Authenticated = () => {
-  const { authUser, credentials } = useContext(UserContext);
+  const { authUser, sessionCredentials } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [courses, setCourses] = useState([]);
   const [errors, setErrors] = useState([]);
   
-  // console.log('Authenticated component rendered');
-  // console.log('authUser:', authUser);
-  // console.log('credentials:', credentials);
-  
   useEffect(() => {
-    // console.log('useEffect triggered');
-    // console.log('authUser in useEffect:', authUser);
-    // console.log('credentials in useEffect:', credentials);
     
-    if (authUser && credentials) {
-      // console.log('Fetching courses for user:', authUser.emailAddress);
-      // console.log('Using credentials:', credentials);
+    if (authUser && sessionCredentials) {
       
-      api("/courses/me", 'GET', null, credentials)
+      api("/courses/me", 'GET', null, sessionCredentials)
         .then((res) => {
-          // console.log('Response status:', res.status);
-          // console.log('Response ok:', res.ok);
+       
           if (res.ok) {
             return res.json();
           } else {
@@ -35,19 +25,16 @@ const Authenticated = () => {
           }
         })
         .then((data) => {
-          // console.log('Courses data received:', data);
           setCourses(data);
         })
         .catch((err) => {
-          // console.error('Error fetching courses:', err);
           setErrors([err.message]);
         });
     } else {
-      // console.log('Not fetching courses because:');
-      // console.log('- authUser exist:', !!authUser);
-      // console.log('- credentials exist:', !!credentials);
+      console.log('authUser exist:', !!authUser);
+      console.log('sessionCredentials exist:', !!sessionCredentials);
     }
-  }, [authUser, credentials]);
+  }, [authUser, sessionCredentials]);
 
   useEffect(() => {
     if (!authUser) {

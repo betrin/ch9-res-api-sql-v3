@@ -1,10 +1,13 @@
-import { useParams } from "react-router-dom"; 
-import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"; 
+import { useEffect, useContext } from "react";
 import { api } from "../utils/apiHelper";
 import { useState } from "react";
 import Markdown from "react-markdown";
+import UserContext from "../context/UserContext";
 
 const Course = () => {
+  const navigate = useNavigate();
+  const { sessionCredentials, authUser } = useContext(UserContext);
   const { id } = useParams();
   const [course, setCourse] = useState(null);
   const [errors, setErrors] = useState([]);
@@ -12,7 +15,6 @@ const Course = () => {
   useEffect(() => {
     api(`/courses/${id}`).then((res) => {
       if (res.ok) {
-        console.log(res);
         return res.json();
       } else {
         throw new Error(`HTTP error! status: ${res.status}`);
@@ -31,6 +33,22 @@ const Course = () => {
       </div>
     );
   }
+
+  const handleDelete = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await api(`/courses/${id}`, 'DELETE', course, sessionCredentials);
+      if (response.ok) {
+        navigate('/');
+      } else {
+        throw new Error(`ERROR - HTTP status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error deleting course:', error);
+      navigate('/error');
+    }
+  };
+
   if (!course) {
     return (
       <div className="wrap">
@@ -42,12 +60,16 @@ const Course = () => {
     <main>
       <div className="actions--bar">
         <div className="wrap">
-          <a className="button" href={`/courses/${id}/update`}>
-            Update Course
-          </a>
-          <a className="button" href={`/courses/${id}/delete`}>
-            Delete Course
-          </a>
+          {authUser && authUser.id === course.userId && (
+            <>
+              <a className="button" href={`/courses/${id}/update`}>
+                Update Course
+              </a>
+              <a className="button" onClick={handleDelete}>
+                Delete Course
+              </a>
+            </>
+          )}
           <a className="button button-secondary" href="/">
             Return to List
           </a>  

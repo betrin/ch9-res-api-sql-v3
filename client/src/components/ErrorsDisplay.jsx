@@ -1,15 +1,16 @@
 const ErrorsDisplay = ({ errors }) => {
   let errorsDisplay = null;
 
-  if (errors.length) {
+  if (errors && errors.length) {
     errorsDisplay = (
       <div className="validation--errors">
         <h3>Validation Errors</h3>
         <ul>
-            <li>Please provide a value for "Title"</li>
-            <li>Please provide a value for "Description"</li>
+          {errors.map((error, index) => (
+            <li key={index}>{error}</li>
+          ))}
         </ul>
-    </div>
+      </div>
     );
   }
 

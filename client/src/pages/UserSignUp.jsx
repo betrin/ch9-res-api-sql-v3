@@ -20,7 +20,7 @@ const UserSignUp = () => {
     const user = {
       firstName: firstName.current.value,
       lastName: lastName.current.value,
-      username: username.current.value,
+      emailAddress: username.current.value,
       password: password.current.value,
     }
 

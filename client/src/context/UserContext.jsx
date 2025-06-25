@@ -6,10 +6,11 @@ export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const cookie = Cookies.get("authedUser");
-  const credentialsCookie = Cookies.get("credentials");
+  const storedCredentials = sessionStorage.getItem("sessionCredentials");
   
   const [authUser, setAuthUser] = useState(cookie ? JSON.parse(cookie) : null);
-  const [credentials, setCredentials] = useState(credentialsCookie ? JSON.parse(credentialsCookie) : null);
+  // Store credentials in sessionStorage for persistence across navigation
+  const [sessionCredentials, setSessionCredentials] = useState( storedCredentials ? JSON.parse(storedCredentials) : null);
   
   const signIn = async (userCredentials) => {
     // console.log('UserContext - signIn called with:', userCredentials);
@@ -18,9 +19,10 @@ export const UserProvider = ({ children }) => {
       const user = await response.json();
       // console.log('User: ', user);
       setAuthUser(user);
-      setCredentials(userCredentials);
+      // Store credentials in sessionStorage
+      setSessionCredentials(userCredentials);
+      sessionStorage.setItem("sessionCredentials", JSON.stringify(userCredentials));
       Cookies.set("authedUser", JSON.stringify(user), { expires: 1 });
-      Cookies.set("credentials", JSON.stringify(userCredentials), { expires: 1 });
       return user;
     } else if (response.status === 401) {
       return null;
@@ -31,15 +33,15 @@ export const UserProvider = ({ children }) => {
 
   const signOut = () => {
     setAuthUser(null);
-    setCredentials(null);
+    setSessionCredentials(null);
     Cookies.remove('authedUser'); 
-    Cookies.remove('credentials');
+    sessionStorage.removeItem("sessionCredentials");
   }
 
   return (
     <UserContext.Provider value={{
       authUser,
-      credentials,
+      sessionCredentials,
       signIn,
       signOut,
       }}>

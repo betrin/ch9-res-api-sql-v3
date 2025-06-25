@@ -18,6 +18,9 @@ const UserSignIn = () => {
     let from = '/authenticated';
     if (location.state) {
       from = location.state.from;
+      if (from === 'signin' || from === 'signup') {
+        from = '/authenticated';
+      }
     }
 
     const credentials = {

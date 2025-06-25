@@ -18,6 +18,8 @@ export const api = (
   if (credentials) {
     const encodedCredentials = btoa(`${credentials.username}:${credentials.password}`);
     options.headers['Authorization'] = `Basic ${encodedCredentials}`;
+  } else {
+    console.log('No credentials provided');
   }
 
   return fetch(url, options);
