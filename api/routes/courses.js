@@ -23,6 +23,28 @@ router.get('/courses', async (req, res) => {
   }
 });
 
+router.get('/courses/me', authenticateUser, asyncHandler(async (req, res) => {
+  try {
+    
+    const courses = await Course.findAll({
+      where: {
+        userId: req.currentUser.id
+      },
+      attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      include: [
+        {
+          model: User,
+          attributes: ["firstName", "lastName", "emailAddress"],
+        },
+      ],
+    });
+    
+    res.json(courses);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}));
+
 // GET /api/courses/:id - Returns a course by id
 router.get('/courses/:id', async (req, res) => {
   try {
