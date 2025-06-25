@@ -2,8 +2,10 @@ import { api } from "../utils/apiHelper";
 import { useState, useEffect, useContext } from "react";
 import ErrorsDisplay from '../components/ErrorsDisplay';
 import UserContext from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const Courses = () => {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [errors, setErrors] = useState([]);
   const { authUser } = useContext(UserContext);
@@ -24,6 +26,7 @@ const Courses = () => {
       })
       .catch((err) => {
         setErrors([err.message]);
+        navigate('/error');
       });
   }, []);
   

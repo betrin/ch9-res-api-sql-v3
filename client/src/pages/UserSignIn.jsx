@@ -58,6 +58,7 @@ const UserSignIn = () => {
       console.log('Error during sign in: ', error);
       setErrors(['An error occurred during sign in']);
       setIsSigningIn(false);
+      navigate('/error');
     }
   }
 

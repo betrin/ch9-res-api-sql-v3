@@ -30,6 +30,7 @@ const Authenticated = () => {
         })
         .catch((err) => {
           setErrors([err.message]);
+          navigate('/error');
         });
     } else {
       console.log('authUser exist:', !!authUser);
@@ -40,6 +41,7 @@ const Authenticated = () => {
   useEffect(() => {
     if (!authUser) {
       navigate('/error');
+      setErrors(['You must be signed in to access this page']);
     }
   }, [authUser, navigate]);
 

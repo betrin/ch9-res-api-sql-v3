@@ -33,6 +33,7 @@ const Course = () => {
     }).catch((err) => {
       console.error('Error fetching course:', err);
       setErrors([err.message]);
+      navigate('/error');
     });
   }, [id, navigate]);
 

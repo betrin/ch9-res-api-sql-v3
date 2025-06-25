@@ -42,6 +42,7 @@ const UpdateCourse = () => {
       }
     }).catch((err) => {
       setErrors([err.message]);
+      navigate('/error');
     });
   }, [authUser, navigate, id]);
 

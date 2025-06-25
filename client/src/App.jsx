@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Forbidden from "./pages/Forbidden";
 import UserSignOut from "./pages/UserSignOut";
 import PrivateRoute from "./components/PrivateRoute";
+import Error from "./pages/Error";
 const App = () => {
   return (
     <div>
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/signin" element={<UserSignIn />} />
         <Route path="/signout" element={<UserSignOut />} />
         <Route path="/forbidden" element={<Forbidden />} />
+        <Route path="/error" element={<Error />} />
         {/* Private Routes */}
         <Route element={<PrivateRoute />}>
           <Route path="/courses/create" element={<CreateCourse />} />
